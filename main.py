@@ -45,4 +45,5 @@ def data():
 
 @app.route('/dashboard')
 def dashboard():
+  # cursor.execute("SELECT first_name FROM user")
   return render_template('dashboard.html')

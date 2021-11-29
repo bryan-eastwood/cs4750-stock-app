@@ -29,6 +29,9 @@
           <a class="flex items-center text-indigo-400 no-underline hover:no-underline font-bold text-2xl lg:text-4xl" href="#">
             UVA<span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">Trade</span>
           </a>
+          <a class="flex items-end text-white no-underline hover:no-underline font-bold text-2xl lg:text-4xl" href="#">
+            Nathan
+          </a>
       </div>
 
       <!--Main-->
@@ -52,35 +55,35 @@
                         <td class="font-extrabold p-4 w-1/2"><span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">
                             AAPL
                           </span></td>
-                        <td class="p-4 w-2/3">Adam</td>
+                        <td class="p-4 w-2/3">858</td>
                         <td class="p-4 w-2/3">858</td>
                       </tr>
                       <tr>
                         <td class="font-extrabold p-4 w-1/2"><span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">
                             MSFT
                           </span></td>
-                        <td class="p-4 w-2/3">Adam</td>
+                        <td class="p-4 w-2/3">112</td>
                         <td class="p-4 w-2/3">112</td>
                       </tr>
                       <tr>
                         <td class="font-extrabold p-4 w-1/2"><span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">
                             TSLA
                           </span></td>
-                        <td class="p-4 w-2/3">Chris</td>
+                        <td class="p-4 w-2/3">1,280</td>
                         <td class="p-4 w-2/3">1,280</td>
                       </tr>
                       <tr>
                         <td class="font-extrabold p-4 w-1/2"><span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">
                             JMIA
                           </span></td>
-                        <td class="p-4 w-2/3">Chris</td>
+                        <td class="p-4 w-2/3">1,280</td>
                         <td class="p-4 w-2/3">1,280</td>
                       </tr>
                       <tr>
                         <td class="font-extrabold p-4 w-1/2"><span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">
                             PLTR
                           </span></td>
-                        <td class="p-4 w-2/3">Chris</td>
+                        <td class="p-4 w-2/3">1,280</td>
                         <td class="p-4 w-2/3">1,280</td>
                       </tr>
                     </tbody>
@@ -90,7 +93,7 @@
           </form>
 
           <h1 class="my-4 text-3xl md:text-5xl text-white opacity-75 font-bold leading-tight text-center md:text-left">
-            Dashboard
+            Friends
           </h1>
 
           <form class="bg-gray-900 opacity-75 w-full shadow-lg rounded-lg px-8 pt-6 pb-8 mb-4">
@@ -118,60 +121,28 @@
               </button>
             </div>
           </form>
-
+          <button
+            class="bg-red-400 hover:from-pink-500 hover:to-green-500 text-white font-bold py-2 px-4 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out self-center"
+            type="button" onclick="deleteAccount()">
+            Delete Account
+          </button>
+          <script>
+            function deleteAccount() {
+              var answer = window.confirm("Are you sure you want to delete your account?");
+              if (answer) {
+                //query("DELETE FROM user WHERE username = (user to be dropped);")
+                alert("We're sad to see you go :(")
+              }
+              else {
+                alert("Great choice!")
+              }
+              
+            }
+          </script>
         </div>
+        
 
-        <!--Right Col-->
-        <div class="w-full xl:w-3/5 p-12 overflow-hidden -mb-7">
-            <div class="xl:w-4/5 p-12 overflow-hidden bg-gray-900 opacity-75 w-full shadow-lg rounded-lg px-8 pt-6 pb-8 mb-0">
-                <div class="mb-4">
-                    <label class="block text-blue-300 py-2 font-bold mb-2" for="emailaddress">
-                        Popular Today
-                    </label>
-                    <div class="rounded-lg border-2 p-2 border-gray text-white">
-                        <table class="table-fixed">
-                            <tbody>
-                              <tr>
-                                <td class="font-extrabold p-4 w-1/2"><span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">
-                                    AAPL
-                                  </span></td>
-                                <td class="p-4 w-2/3">Adam</td>
-                                <td class="p-4 w-2/3">858</td>
-                              </tr>
-                              <tr>
-                                <td class="font-extrabold p-4 w-1/2"><span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">
-                                    MSFT
-                                  </span></td>
-                                <td class="p-4 w-2/3">Adam</td>
-                                <td class="p-4 w-2/3">112</td>
-                              </tr>
-                              <tr>
-                                <td class="font-extrabold p-4 w-1/2"><span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">
-                                    TSLA
-                                  </span></td>
-                                <td class="p-4 w-2/3">Chris</td>
-                                <td class="p-4 w-2/3">1,280</td>
-                              </tr>
-                              <tr>
-                                <td class="font-extrabold p-4 w-1/2"><span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">
-                                    JMIA
-                                  </span></td>
-                                <td class="p-4 w-2/3">Chris</td>
-                                <td class="p-4 w-2/3">1,280</td>
-                              </tr>
-                              <tr>
-                                <td class="font-extrabold p-4 w-1/2"><span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">
-                                    PLTR
-                                  </span></td>
-                                <td class="p-4 w-2/3">Chris</td>
-                                <td class="p-4 w-2/3">1,280</td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                </div>
-            </div>
-        </div>
+        
         <!--Footer-->
         <div class="w-full pt-16 pb-6 text-sm text-center md:text-left fade-in">
           <a class="text-gray-500 no-underline hover:no-underline" href="#">&copy; App 2020</a>
