@@ -42,3 +42,7 @@ def data():
       'vol': row[3]
     })
   return jsonify(data)
+
+@app.route('/dashboard')
+def dashboard():
+  return render_template('dashboard.html')
