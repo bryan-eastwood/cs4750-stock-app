@@ -94,7 +94,7 @@ def allstocks():
   allstocks = []
   for x in cursor:
       allstocks.append(x)
-  return render_template('allstocks.html', allstocks=allstocks, username=username)
+  return render_template('allstocks.html', allstocks=allstocks, usernamelogin=username)
 
 @app.route('/getcookie', methods = ['POST', 'GET'])
 def getcookie():
