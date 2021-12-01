@@ -90,7 +90,7 @@ def dashboard():
 @app.route('/allstocks', methods = ['POST', 'GET'])
 def allstocks():
   username = request.cookies.get("userID")
-  cursor.execute("SELECT max(ticker) AS ticker, ROUND(min(price), 2), ROUND(max(price), 2), max(datetime) FROM price_data GROUP BY ticker;")
+  cursor.execute("SELECT max(ticker) AS ticker, ROUND(min(price), 2), ROUND(max(price), 2), max(datetime) FROM price_data WHERE ticker LIKE CONCAT(%s, '%') GROUP BY ticker;", (request.args.get('query') or "",))
   allstocks = []
   for x in cursor:
       allstocks.append(x)
