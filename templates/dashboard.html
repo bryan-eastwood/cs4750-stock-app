@@ -30,7 +30,7 @@
             UVA<span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">Trade</span>
           </a>
           <a class="flex items-end text-white no-underline hover:no-underline font-bold text-2xl lg:text-4xl" href="#">
-            Nathan
+            Hi, {{ usernamelogin }}
           </a>
       </div>
 
@@ -126,19 +126,6 @@
             type="button" onclick="deleteAccount()">
             Delete Account
           </button>
-          <script>
-            function deleteAccount() {
-              var answer = window.confirm("Are you sure you want to delete your account?");
-              if (answer) {
-                //query("DELETE FROM user WHERE username = (user to be dropped);")
-                alert("We're sad to see you go :(")
-              }
-              else {
-                alert("Great choice!")
-              }
-              
-            }
-          </script>
         </div>
         
 
@@ -153,3 +140,19 @@
     </div>
   </body>
 </html>
+
+
+<!--All of my JavaScript functions-->
+<script>
+  function deleteAccount() {
+    var answer = window.confirm("Are you sure you want to delete your account?");
+    if (answer) {
+      //query("DELETE FROM user WHERE username = (user to be dropped);")
+      alert("We're sad to see you go :(")
+    }
+    else {
+      
+    }
+    
+  }
+</script>

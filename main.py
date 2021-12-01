@@ -45,5 +45,27 @@ def data():
 
 @app.route('/dashboard')
 def dashboard():
-  # cursor.execute("SELECT first_name FROM user")
-  return render_template('dashboard.html')
+  try:
+    cursor.execute("SELECT * FROM user WHERE username = %s AND password = %s;", (request.args['usernamelogin'], request.args['passwordlogin']))
+  except BaseException as e:
+    print(e)
+    print(cursor.statement)
+  data = []
+  for row in cursor:
+    data.append({
+      'username': row[0]
+  })
+  if len(data) > 0:
+    return render_template('dashboard.html', usernamelogin = request.args['usernamelogin'])#, username = curUser)
+  else:
+    return render_template('index.html')
+
+@app.route('/setcookie', methods = ['POST', 'GET'])
+def setcookie():
+  if request.method == 'POST':
+    user = request.form['nm']
+   
+  resp = make_response(render_template('readcookie.html'))
+  resp.set_cookie('userID', user)
+   
+  return resp
