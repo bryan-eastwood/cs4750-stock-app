@@ -18,8 +18,11 @@ cursor = mydb.cursor()
 
 @app.route('/')
 def hello():
-    #cursor.execute("SELECT * FROM trade")
-    return render_template("index.html")
+    cursor.execute("SELECT * FROM trade NATURAL JOIN user ORDER BY datetime DESC LIMIT 5")
+    trades = []
+    for x in cursor:
+      trades.append((x[3], "BUY" if x[2] == 0 else "SELL", x[7]))
+    return render_template("index.html", top_trades=trades)
 
 @app.route('/chart')
 def chart():

@@ -83,41 +83,15 @@
                     <div class="rounded-lg border-2 p-2 border-gray text-white">
                         <table class="table-fixed">
                             <tbody>
+                              {% for trade in top_trades %}
                               <tr>
                                 <td class="font-extrabold p-4 w-1/2"><span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">
-                                    AAPL
+                                    {{ trade[0] }}
                                   </span></td>
-                                <td class="p-4 w-2/3">Adam</td>
-                                <td class="p-4 w-2/3">858</td>
+                                <td class="p-4 w-2/3">{{ trade[1] }}</td>
+                                <td class="p-4 w-2/3">{{ trade[2] }}</td>
                               </tr>
-                              <tr>
-                                <td class="font-extrabold p-4 w-1/2"><span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">
-                                    MSFT
-                                  </span></td>
-                                <td class="p-4 w-2/3">Adam</td>
-                                <td class="p-4 w-2/3">112</td>
-                              </tr>
-                              <tr>
-                                <td class="font-extrabold p-4 w-1/2"><span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">
-                                    TSLA
-                                  </span></td>
-                                <td class="p-4 w-2/3">Chris</td>
-                                <td class="p-4 w-2/3">1,280</td>
-                              </tr>
-                              <tr>
-                                <td class="font-extrabold p-4 w-1/2"><span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">
-                                    JMIA
-                                  </span></td>
-                                <td class="p-4 w-2/3">Chris</td>
-                                <td class="p-4 w-2/3">1,280</td>
-                              </tr>
-                              <tr>
-                                <td class="font-extrabold p-4 w-1/2"><span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">
-                                    PLTR
-                                  </span></td>
-                                <td class="p-4 w-2/3">Chris</td>
-                                <td class="p-4 w-2/3">1,280</td>
-                              </tr>
+                              {% endfor %}        
                             </tbody>
                           </table>
                         </div>
