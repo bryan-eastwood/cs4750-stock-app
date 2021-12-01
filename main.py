@@ -1,5 +1,6 @@
 from flask import Flask, make_response, jsonify, request
 from flask import render_template
+from flask import redirect 
 from datetime import *; from dateutil.relativedelta import *
 import time
 
@@ -30,15 +31,58 @@ def chart():
   return make_response(render_template('chart.html', ticker = stock))
 
 
-@app.route('/social')
+@app.route('/social', methods = ['POST', 'GET'])
 def social():
   username = request.cookies.get("userID")
   cursor.execute("SELECT * FROM follows LEFT JOIN user on username2 = username WHERE username1 = %s ", (username,)) # get my trades.
   myfollowed = []
   for x in cursor:
     myfollowed.append(x)
-  print (myfollowed)
-  return render_template("social.html", usernamelogin=username, myfollowed=myfollowed)
+  myfollowedtrade = []
+  
+  
+  # cursor.execute('SELECT follows.username2, ticker, amount, trade.tid, COUNT(likes.username), COUNT(dislikes.username) FROM participates_in, trade, follows, likes, dislikes WHERE follows.username1=%s AND participates_in.tid = trade.tid AND trade.username = follows.username2 GROUP BY trade.tid;',(username,))
+  for x in cursor:
+    myfollowedtrade.append(x)
+  # print(myfollowedtrade)
+  return render_template("social.html", usernamelogin=username, myfollowed=myfollowed, myfollowedtrade=myfollowedtrade)
+
+@app.route('/follow', methods = ['GET','POST'])
+def follow():
+  username = request.cookies.get("userID")
+  try:
+    usertofollow = request.args['usertofollow']
+    cursor.execute('INSERT INTO follows VALUES(%s,%s)',(username,usertofollow))
+    mydb.commit()
+  except BaseException as e:
+    print (e)
+    print (cursor.statement)
+  return redirect("/social")
+@app.route('/like', methods = ['GET','POST'])
+def like():
+  username = request.cookies.get("userID")
+  print(request.args.get('liked'))
+  try:
+    liked = request.args['liked']
+
+    cursor.execute('INSERT INTO likes VALUES(%s,%s)',(liked,username))
+    mydb.commit()
+  except BaseException as e:
+    print (e)
+    print (cursor.statement)
+  return redirect("/social")
+
+@app.route('/unfollow', methods = ['GET','POST'])
+def unfollow():
+  username = request.cookies.get("userID")
+  print(request.args.get('usertofollow'))
+  try:
+    cursor.execute('DELETE FROM follows WHERE username1 = %s AND username2 = %s;', (username,request.args['unfollowed']))
+    mydb.commit()
+  except BaseException as e:
+    print (e)
+    print (cursor.statement)
+  return redirect("/social")
 
 
 @app.route('/data')
