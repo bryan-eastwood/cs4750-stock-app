@@ -28,6 +28,16 @@ def hello():
 def chart():
   return render_template("chart.html")
 
+@app.route('/social')
+def social():
+ username = request.cookies.get("userID")
+ cursor.execute("SELECT * FROM trade NATURAL JOIN user WHERE %s ORDER BY datetime", (username,)) # get my trades.
+ my_trades = []
+ for x in cursor:
+   my_trades.append(x)
+ print (my_trades)
+ return render_template("social.html", mytrades=my_trades)
+
 @app.route('/data')
 def data():
   latest = datetime.fromtimestamp(1628523000)
@@ -46,22 +56,30 @@ def data():
     })
   return jsonify(data)
 
-@app.route('/dashboard')
+ 
+@app.route('/dashboard', methods =  ['GET', 'POST'])
 def dashboard():
+  if request.method == 'POST':
+   username = request.form['usernamelogin']
+   password =  request.form['passwordlogin']
   try:
-    cursor.execute("SELECT * FROM user WHERE username = %s AND password = %s;", (request.args['usernamelogin'], request.args['passwordlogin']))
+   cursor.execute("SELECT * FROM user WHERE username = %s AND password = %s;", (username, password))
   except BaseException as e:
-    print(e)
-    print(cursor.statement)
+   print(e)
+   print(cursor.statement)
   data = []
   for row in cursor:
-    data.append({
-      'username': row[0]
+   data.append({
+     'username': row[0]
   })
   if len(data) > 0:
-    return render_template('dashboard.html', usernamelogin = request.args['usernamelogin'])#, username = curUser)
+   resp = make_response(render_template('dashboard.html', usernamelogin = request.form['usernamelogin']))#, username = curUser))
+   resp.set_cookie('userID', request.form['usernamelogin'])
+   return resp
+  
   else:
-    return render_template('index.html')
+   return render_template('index.html')
+
 
 @app.route('/getcookie', methods = ['POST', 'GET'])
 def getcookie():
@@ -77,5 +95,5 @@ def setcookie():
 
 @app.route('/newuserpage')
 def newuserpage():
-  cursor.execute("INSERT INTO user (username, password, first_name, last_name) VALUES (%s, %s, %s, %s);", (request.args['usernamesignup'], request.args['passwordsignup'], request.args['fnamesignup'], request.args['lnamesignup']))
+  cursor.execute("INSERT INTO user (username, password, first_name, last_name, likes_count) VALUES (%s, %s, %s, %s, 0);", (request.args['usernamesignup'], request.args['passwordsignup'], request.args['fnamesignup'], request.args['lnamesignup']))
   return render_template('newuserpage.html')
