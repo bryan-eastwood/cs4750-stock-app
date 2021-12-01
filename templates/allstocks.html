@@ -50,20 +50,28 @@
             <tbody>
               {% for stock in allstocks %}
               <tr>
-                <td class="font-extrabold p-4 w-1/2"><span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">
+                <td class="font-extrabold p-4 w-1/5"><span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">
                     {{ stock[0] }}
-                  </span></td>
-                
-                <td class="p-4 w-2/3">
+                  </span>
+                </td>
+                <td class="font-extrabold p-4 w-1/5"><span class="bg-clip-text text-white">
+                    Minimum Price: {{ stock[1] }}
+                  </span>
+                </td>
+                <td class="font-extrabold p-4 w-1/5"><span class="bg-clip-text text-white">
+                    Maximum Price: {{ stock[2] }}
+                  </span>
+                </td>
+                <td class="p-4 w-1/5">
                     <form action="/chart" method="get">
                         <input class="bg-gradient-to-r from-purple-800 to-green-500 hover:from-pink-500 hover:to-green-500 text-white font-bold py-2 px-4 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
                          type="submit" value= {{stock[0]}} id="ticker" name="ticker">
                       </form> 
                 </td>
-                <td class="p-4 w-2/3">
-                    <form method="get">
+                <td class="p-4 w-1/5">
+                    <form action="/allstocks" method="get">
                         <input class="bg-gradient-to-r from-purple-800 to-green-500 hover:from-pink-500 hover:to-green-500 text-white font-bold py-2 px-4 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
-                         type="submit" value= Subscribe id="subscribe" name="subscribe">
+                         type="submit" value= Subscribe id="subscribe" name="subscribe" onclick="alert('Subscribed.')">
                       </form>
                 </td>          
               </tr>
