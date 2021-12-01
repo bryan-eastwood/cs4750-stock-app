@@ -26,7 +26,19 @@ def hello():
 
 @app.route('/chart')
 def chart():
+  
   return render_template("chart.html")
+
+@app.route('/social')
+def social():
+  username = get_cookie('userID')
+  cursor.execute("SELECT * FROM trade NATURAL JOIN user WHERE %s ORDER BY datetime", (username,)) # get my trades.
+  my_trades = []
+  for x in cursor:
+    my_trades.append(x)
+  print (my_trades)
+  return render_template("social.html", mytrades=my_trades)
+
 
 @app.route('/data')
 def data():
