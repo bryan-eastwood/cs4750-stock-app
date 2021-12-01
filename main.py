@@ -72,3 +72,8 @@ def setcookie():
   resp.set_cookie('userID', user)
    
   return resp
+
+@app.route('/newuserpage')
+def newuserpage():
+  cursor.execute("INSERT INTO user (username, password, first_name, last_name) VALUES (%s, %s, %s, %s);", (request.args['usernamesignup'], request.args['passwordsignup'], request.args['fnamesignup'], request.args['lnamesignup']))
+  return render_template('newuserpage.html')
