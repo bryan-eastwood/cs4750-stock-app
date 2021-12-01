@@ -90,7 +90,7 @@ def dashboard():
 @app.route('/allstocks', methods = ['POST', 'GET'])
 def allstocks():
   username = request.cookies.get("userID")
-  cursor.execute("SELECT DISTINCT ticker FROM price_data;")
+  cursor.execute("SELECT ticker FROM is_on")
   allstocks = []
   for x in cursor:
       allstocks.append(x)
