@@ -140,6 +140,19 @@ def allstocks():
       allstocks.append(x)
   return render_template('allstocks.html', allstocks=allstocks, usernamelogin=username)
 
+@app.route('/subscribed', methods = ['GET', 'POST'])
+def subscribed():
+  username = request.cookies.get("userID")
+  print(request.args.get('subscribes'))
+  try:
+    subscribe = request.args['subscribes']
+    cursor.execute('INSERT INTO subscribes_to VALUES(%s,%s)',(username, subscribe))
+    mydb.commit()
+  except BaseException as e:
+    print (e)
+    print (cursor.statement)
+  return redirect('/dashboard')
+
 @app.route('/getcookie', methods = ['POST', 'GET'])
 def getcookie():
   value = request.cookies.get('userID')   
