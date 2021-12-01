@@ -89,7 +89,12 @@ def dashboard():
 
 @app.route('/allstocks', methods = ['POST', 'GET'])
 def allstocks():
-  return render_template('allstocks.html')
+  username = request.cookies.get("userID")
+  cursor.execute("SELECT DISTINCT ticker FROM price_data;")
+  allstocks = []
+  for x in cursor:
+      allstocks.append(x)
+  return render_template('allstocks.html', allstocks=allstocks, username=username)
 
 @app.route('/getcookie', methods = ['POST', 'GET'])
 def getcookie():

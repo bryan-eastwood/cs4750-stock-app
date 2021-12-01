@@ -42,6 +42,33 @@
         All Stocks:
       </h1>
 
+      <div class="rounded-lg border-2 p-2 border-gray text-white">
+        <table class="table-fixed">
+            <tbody>
+              {% for stock in allstocks %}
+              <tr>
+                <td class="font-extrabold p-4 w-1/2"><span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">
+                    {{ stock[0] }}
+                  </span></td>
+                
+                <td class="p-4 w-2/3">
+                    <form action="/chart" method="get">
+                        <input class="bg-gradient-to-r from-purple-800 to-green-500 hover:from-pink-500 hover:to-green-500 text-white font-bold py-2 px-4 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
+                         type="submit" value= {{stock[0]}} id="ticker" name="ticker">
+                      </form> 
+                </td>
+                <td class="p-4 w-2/3">
+                    <form method="get">
+                        <input class="bg-gradient-to-r from-purple-800 to-green-500 hover:from-pink-500 hover:to-green-500 text-white font-bold py-2 px-4 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
+                         type="submit" value= Subscribe id="subscribe" name="subscribe">
+                      </form>
+                </td>          
+              </tr>
+              {% endfor %}        
+            </tbody>
+          </table>
+        </div>
+
       <!--Footer-->
       <div class="w-full pt-16 pb-6 text-sm text-center md:text-left fade-in">
         <a class="text-gray-500 no-underline hover:no-underline" href="#">&copy; App 2020</a>
