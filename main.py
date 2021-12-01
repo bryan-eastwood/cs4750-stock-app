@@ -31,7 +31,7 @@ def chart():
 
 @app.route('/social')
 def social():
-  username = get_cookie('userID')
+  username = request.cookies.get("userID")
   cursor.execute("SELECT * FROM trade NATURAL JOIN user WHERE %s ORDER BY datetime", (username,)) # get my trades.
   my_trades = []
   for x in cursor:
@@ -58,10 +58,16 @@ def data():
     })
   return jsonify(data)
 
-@app.route('/dashboard')
+@app.route('/dashboard', methods =  ['GET', 'POST'])
 def dashboard():
+  if request.method == 'POST': 
+    username = request.form['usernamelogin']
+    password =  request.form['passwordlogin']
+  
   try:
-    cursor.execute("SELECT * FROM user WHERE username = %s AND password = %s;", (request.args['usernamelogin'], request.args['passwordlogin']))
+
+    
+    cursor.execute("SELECT * FROM user WHERE username = %s AND password = %s;", (username, password))
   except BaseException as e:
     print(e)
     print(cursor.statement)
@@ -71,7 +77,11 @@ def dashboard():
       'username': row[0]
   })
   if len(data) > 0:
-    return render_template('dashboard.html', usernamelogin = request.args['usernamelogin'])#, username = curUser)
+    resp = make_response(render_template('dashboard.html', usernamelogin = request.form['usernamelogin']))#, username = curUser))
+    resp.set_cookie('userID', request.form['usernamelogin'])
+   
+    return resp
+    
   else:
     return render_template('index.html')
 
