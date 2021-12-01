@@ -115,3 +115,8 @@ def userdeleted():
   cursor.execute("DELETE FROM user WHERE username = %s;", (username,))
   mydb.commit()
   return render_template('userdeleted.html')
+
+@app.route('/stocks')
+def list_stocks():
+  cursor.execute("SELECT ticker FROM is_on WHERE ticker LIKE CONCAT(%s, '%')", (request.args.get('query'),))
+  return jsonify([x for x in cursor])
