@@ -75,12 +75,19 @@ def dashboard():
   else:
     return render_template('index.html')
 
+@app.route('/getcookie', methods = ['POST', 'GET'])
+def getcookie():
+  value = request.cookies.get('userID')   
+  return jsonify(value)
+
 @app.route('/setcookie', methods = ['POST', 'GET'])
-def setcookie():
-  if request.method == 'POST':
-    user = request.form['nm']
-   
-  resp = make_response(render_template('readcookie.html'))
-  resp.set_cookie('userID', user)
+def setcookie():   
+  resp = make_response(render_template('index.html'))
+  resp.set_cookie('userID', request.args.get('user'))
    
   return resp
+
+@app.route('/newuserpage')
+def newuserpage():
+  cursor.execute("INSERT INTO user (username, password, first_name, last_name) VALUES (%s, %s, %s, %s);", (request.args['usernamesignup'], request.args['passwordsignup'], request.args['fnamesignup'], request.args['lnamesignup']))
+  return render_template('newuserpage.html')
