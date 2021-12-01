@@ -24,9 +24,10 @@ def hello():
       trades.append((x[3], "BUY" if x[2] == 0 else "SELL", x[7]))
     return render_template("index.html", top_trades=trades)
 
-@app.route('/chart')
+@app.route('/chart', methods =  ['GET', 'POST'])
 def chart():
-  return render_template("chart.html")
+  stock = request.args['ticker']
+  return make_response(render_template('chart.html', ticker = stock))
 
 @app.route('/social')
 def social():
@@ -73,10 +74,15 @@ def dashboard():
      'username': row[0]
   })
   if len(data) > 0:
-   resp = make_response(render_template('dashboard.html', usernamelogin = request.form['usernamelogin']))#, username = curUser))
+   resp = make_response(render_template('dashboard.html', usernamelogin = request.form['usernamelogin']))
    resp.set_cookie('userID', request.form['usernamelogin'])
    return resp
   
+  #else:
+  #  try:
+  #    username = request.cookies.get("userID")
+  #  except BaseException as e:
+  #    return render_template('index.html')
   else:
    return render_template('index.html')
 
