@@ -37,12 +37,20 @@
                     UVA<span
                         class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">Trade</span>
                 </a>
+                <div>
+                  <form action="/dashboard" method="get">
+                    <input class="bg-gradient-to-r from-purple-800 to-green-500 hover:from-pink-500 hover:to-green-500 text-white font-bold py-2 px-4 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
+                     type="submit" value="Back to Dashboard">
+                  </form> 
+                </div>
             </div>
-
             <!--Main-->
             <div
                 class="container pt-16 mx-auto flex flex-wrap flex-col md:flex-row items-center justify-center">
                 <div class="p-12 overflow-hidden bg-gray-900 opacity-75 shadow-lg rounded-lg px-8 pt-6 pb-8 mb-0">
+                  <a class="flex items-end text-white no-underline hover:no-underline font-bold text-2xl lg:text-4xl" href="#">
+                    {{ ticker }}
+                  </a>
                     <div class="m-6" id="tradingview-chart"></div>
                     <button
                     class="w-14 bg-gradient-to-r from-purple-800 to-green-500 hover:from-pink-500 hover:to-green-500 text-white font-bold py-2 px-0 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
@@ -59,6 +67,7 @@
     
                 </div>
             </div>
+            
             <!--Footer-->
             <div class="w-full pt-16 pb-6 text-sm text-center md:text-left fade-in">
                 <a class="text-gray-500 no-underline hover:no-underline" href="#">&copy; App 2020</a>

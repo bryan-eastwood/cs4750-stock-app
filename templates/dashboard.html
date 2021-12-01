@@ -41,6 +41,20 @@
           <h1 class="my-4 text-3xl md:text-5xl text-white opacity-75 font-bold leading-tight text-center md:text-left">
             Dashboard
           </h1>
+          <br></br>
+
+          <form action="/chart" method="get">
+            <input
+            class="shadow appearance-none border rounded w-full p-3 text-gray-700 leading-tight focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
+            id="ticker"
+            name="ticker"
+            type="text"
+            placeholder="Search Stocks:"
+            />
+          </form>
+          
+          <br></br>
+
 
           <form class="bg-gray-900 opacity-75 w-full shadow-lg rounded-lg px-8 pt-6 pb-8 mb-4">
             <div class="mb-4">
@@ -93,11 +107,13 @@
               </button>
             </div>
           </form>
-          <button
+          <form action="/userdeleted" method="post">
+            <button
             class="bg-red-400 hover:from-pink-500 hover:to-green-500 text-white font-bold py-2 px-4 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out self-center"
-            type="button" onclick="deleteAccount()">
+            type="submit">
             Delete Account
           </button>
+          </form>
         </div>
         
 
@@ -112,19 +128,3 @@
     </div>
   </body>
 </html>
-
-
-<!--All of my JavaScript functions-->
-<script>
-  function deleteAccount() {
-    var answer = window.confirm("Are you sure you want to delete your account?");
-    if (answer) {
-      //query("DELETE FROM user WHERE username = (user to be dropped);")
-      alert("We're sad to see you go :(")
-    }
-    else {
-      
-    }
-    
-  }
-</script>
