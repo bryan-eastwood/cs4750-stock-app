@@ -24,78 +24,128 @@
   <body class="leading-normal tracking-normal text-indigo-400 m-6 bg-cover bg-fixed" style="background-image: url('static/img/header.png');">
     <div class="h-full">
       <!--Nav-->
+
       <div class="w-full container mx-auto">
         <div class="w-full flex items-center justify-between">
           <a class="flex items-center text-indigo-400 no-underline hover:no-underline font-bold text-2xl lg:text-4xl" href="#">
             UVA<span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">Trade</span>
-          </a>
+            <a class="flex items-end text-white no-underline hover:no-underline font-bold text-2xl lg:text-4xl" href="#">
+                     {{ usernamelogin }}
+              </a>
+           </a>
+             <h1 class="my-4 text-3xl md:text-5xl text-white opacity-75 font-bold leading-tight text-center md:text-left">            
+               Social Info
+            </h1>
+          
           <div class="flex items-center justify-between pt-4">
-            <button
-              class="bg-gradient-to-r from-purple-800 to-green-500 hover:from-pink-500 hover:to-green-500 text-white font-bold py-2 px-4 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
-              type="button"
-              
-            >
-            <form action="/dashboard" method="get">
-              <label for="usernamelogin">Username:</label>
-              <input class="text-black" type="text" id="usernamelogin" name="usernamelogin"><br><br>
-              <label for="passwordlogin">Password:</label>
-              <input class="text-black" type="password" id="passwordlogin" name="passwordlogin"><br><br>
-              <input class="bg-gradient-to-r from-purple-800 to-green-500 hover:from-pink-500 hover:to-green-500 text-white font-bold py-2 px-4 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
-               type="submit" value="Log In">
-            </form>
-              
+            
             </button>
           </div>
       </div>
 
+
       <!--Main-->
       <div class="container pt-24 md:pt-36 mx-auto flex flex-wrap flex-col md:flex-row items-center">
+
         <!--Left Col-->
+
         <div class="flex flex-col w-full xl:w-2/5 justify-center lg:items-start overflow-y-hidden">
-          <h1 class="my-4 text-3xl md:text-5xl text-white opacity-75 font-bold leading-tight text-center md:text-left">
-            How good are
-            <span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">
-              you
-            </span>
-            at trading?
-          </h1>
+         <p>&nbsp;&nbsp;&nbsp;&nbsp;</p>
+         &nbsp;&nbsp;
+
+         
           <p class="leading-normal text-base md:text-2xl mb-8 text-center md:text-left">
-            Compete against your peers for clout!
+
+            User Search:
           </p>
 
-          <form class="bg-gray-900 opacity-75 w-full shadow-lg rounded-lg px-8 pt-6 pb-8 mb-4">
-            <div class="mb-4">
-              <label class="block text-blue-300 py-2 font-bold mb-2" for="emailaddress">
-                Getting Started
-              </label>
 
-              <p class="mb-6 text-white">Here are the instructions:</p>
+          <form action = "/searchuserpage" method = "get" class="bg-gray-900 opacity-75 w-full shadow-lg rounded-lg px-8 pt-6 pb-8 mb-4">
 
-              <input
-                class="shadow appearance-none border rounded w-full p-3 text-gray-700 leading-tight focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
-                id="emailaddress"
-                type="text"
-                placeholder="you@somewhere.com"
-              />
-            </div>
+            
 
-            <div class="flex items-center justify-between pt-4">
-              <button
-                class="bg-gradient-to-r from-purple-800 to-green-500 hover:from-pink-500 hover:to-green-500 text-white font-bold py-2 px-4 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
-                type="button"
-              >
-                Sign Up
-              </button>
-            </div>
+                <div class="mb-4">
+                    <label class="block text-blue-300 py-2 font-bold mb-2" for="emailaddress">
+                        Subscribe to a user:
+                    </label>
+                    <div class="rounded-lg border-2 p-2 border-gray text-white">
+       
+                                <input
+                                      class="shadow appearance-none border rounded w-full p-3 text-gray-700 leading-tight focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
+                                      id="fnamesignup"
+                                      type="text"
+                                      placeholder="First name:"
+                                 /> 
+                           
+                        </div>
+
+                </div>
           </form>
         </div>
 
+
+
         <!--Right Col-->
+
         <div class="w-full xl:w-3/5 p-12 overflow-hidden -mb-7">
+
+            <p class="leading-normal text-base md:text-2xl mb-8 text-center md:text-left">
+            Subscribed:
+          </p>
             <div class="xl:w-4/5 p-12 overflow-hidden bg-gray-900 opacity-75 w-full shadow-lg rounded-lg px-8 pt-6 pb-8 mb-0">
                 <div class="mb-4">
                     <label class="block text-blue-300 py-2 font-bold mb-2" for="emailaddress">
-                        Popular Today
+                        Users
+                    </label>
+                    <div class="rounded-lg border-2 p-2 border-gray text-white">
+                        <table class="table-fixed">
+                            <tbody>
+                              {% for trade in mytrades %}
+                                <tr>
+                                    <td class="font-extrabold p-4 w-1/2"><span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">
+                                        {{ trade[0] }} 
+                                    </span></td>
+                                    <td class="p-4 w-2/3">{{ trade[1] }}</td>
+                                    <td class="p-4 w-2/3">{{ trade[2] }}</td>
+                                    <td class="p-4 w-2/3"><div class="flex items-center justify-between pt-4">
+                                    <button
+                                        class="bg-gradient-to-r from-red-700 to-red-500 hover:from-yellow-500 hover:to-yellow-500 text-white font-bold py-2 px-4 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
+                                        type="button"
+                                    >
+                                        unsubscrizzle
+                                    </button>
+                                    </div>
+                                </td>
+                              </tr>
+                              {% endfor %}        
+                            </tbody>
+                          </table>
+                        </div>
+                </div>
+            </div>
+        </div>
+       <!--Main-->
+
+        <!--Left Col-->
+
+        <div class="flex flex-col w-full xl:w-2/5 justify-center lg:items-start overflow-y-hidden">
+         <p>&nbsp;&nbsp;&nbsp;&nbsp;</p>
+         &nbsp;&nbsp;
+        </div>
+
+
+
+      
+
+        <div class="w-full xl: p-12 overflow-hidden -mb-7">
+
+            <p class="leading-normal text-base md:text-2xl mb-8 text-center md:text-left">
+            Recent Trades
+          </p>
+            <div class="xl:w-4/5 p-12 overflow-hidden bg-gray-900 opacity-75 w-full shadow-lg rounded-lg px-8 pt-6 pb-8 mb-0">
+                <div class="mb-4">
+                    <label class="block text-blue-300 py-2 font-bold mb-2" for="emailaddress">
+                        Sorted by Most Recent
                     </label>
                     <div class="rounded-lg border-2 p-2 border-gray text-white">
                         <table class="table-fixed">
@@ -105,6 +155,7 @@
                                 <td class="font-extrabold p-4 w-1/2"><span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">
                                     {{ trade[0] }}
                                   </span></td>
+
                                 <td class="p-4 w-2/3">{{ trade[1] }}</td>
                                 <td class="p-4 w-2/3">{{ trade[2] }}</td>
                               </tr>
@@ -115,6 +166,7 @@
                 </div>
             </div>
         </div>
+
         <!--Footer-->
         <div class="w-full pt-16 pb-6 text-sm text-center md:text-left fade-in">
           <a class="text-gray-500 no-underline hover:no-underline" href="#">&copy; App 2020</a>

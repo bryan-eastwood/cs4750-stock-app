@@ -66,11 +66,15 @@
                 <table class="table-fixed">
                     <tbody>
                       <tr>
-                        <td class="font-extrabold p-4 w-1/2"><span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">
-                            PLTR
-                          </span></td>
-                        <td class="p-4 w-2/3">1,280</td>
-                        <td class="p-4 w-2/3">1,280</td>
+                        {% for trade in my_stocks %}
+                              <tr>
+                                <td class="font-extrabold p-4 w-1/2"><span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">
+                                    {{ trade[0] }}
+                                  </span></td>
+                                <td class="p-4 w-2/3">{{ trade[1] }}</td>
+                                <td class="p-4 w-2/3">{{ trade[2] }}</td>
+                              </tr>
+                              {% endfor %}   
                       </tr>
                     </tbody>
                   </table>
