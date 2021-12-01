@@ -62,32 +62,34 @@ def data():
  
 @app.route('/dashboard', methods =  ['GET', 'POST'])
 def dashboard():
-  if request.method == 'POST':
-   username = request.form['usernamelogin']
-   password =  request.form['passwordlogin']
-  try:
-   cursor.execute("SELECT * FROM user WHERE username = %s AND password = %s;", (username, password))
-  except BaseException as e:
-   print(e)
-   print(cursor.statement)
-  data = []
-  for row in cursor:
-   data.append({
-     'username': row[0]
-  })
-  if len(data) > 0:
-   resp = make_response(render_template('dashboard.html', usernamelogin = request.form['usernamelogin']))
-   resp.set_cookie('userID', request.form['usernamelogin'])
-   return resp
-  
-  #else:
-  #  try:
-  #    username = request.cookies.get("userID")
-  #  except BaseException as e:
-  #    return render_template('index.html')
-  else:
-   return render_template('index.html')
 
+  if request.method == 'POST':
+    username = request.form['usernamelogin']
+    password =  request.form['passwordlogin']
+  try:
+    username = request.cookies.get("userID")
+    return render_template('dashboard.html', usernamelogin = username) 
+  except BaseException as e:
+    try:
+      cursor.execute("SELECT * FROM user WHERE username = %s AND password = %s;", (username, password))
+    except BaseException as e:
+      print(e)
+      print(cursor.statement)
+    data = []
+    for row in cursor:
+      data.append({
+      'username': row[0]
+    })
+    if len(data) > 0:
+      resp = make_response(render_template('dashboard.html', usernamelogin = request.form['usernamelogin']))
+      resp.set_cookie('userID', request.form['usernamelogin'])
+      return resp
+    else:
+      return render_template('index.html')
+
+@app.route('/allstocks', methods = ['POST', 'GET'])
+def allstocks():
+  return render_template('allstocks.html')
 
 @app.route('/getcookie', methods = ['POST', 'GET'])
 def getcookie():
