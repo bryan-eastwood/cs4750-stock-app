@@ -107,11 +107,12 @@ def data():
 @app.route('/dashboard', methods =  ['GET', 'POST'])
 def dashboard():
 
+
   if request.method == 'POST':
     username = request.form['usernamelogin']
     password =  request.form['passwordlogin']
   try:
-    username = request.cookies.get("userID")
+    username = request.cookies["userID"]
     return render_template('dashboard.html', usernamelogin = username) 
   except BaseException as e:
     try:
