@@ -29,9 +29,6 @@
         <div class="w-full flex items-center justify-between">
           <a class="flex items-center text-indigo-400 no-underline hover:no-underline font-bold text-2xl lg:text-4xl" href="#">
             UVA<span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">Trade</span>
-            <a class="flex items-end text-white no-underline hover:no-underline font-bold text-2xl lg:text-4xl" href="#">
-                     {{ usernamelogin }}
-              </a>
            </a>
              <h1 class="my-4 text-3xl md:text-5xl text-white opacity-75 font-bold leading-tight text-center md:text-left">            
                Social Info
@@ -66,7 +63,7 @@
 
                 <div class="mb-4">
                     <label class="block text-blue-300 py-2 font-bold mb-2" for="emailaddress">
-                        Subscribe to a user:
+                        Follow a user:
                     </label>
                     <div class="rounded-lg border-2 p-2 border-gray text-white">
        
@@ -90,32 +87,32 @@
         <div class="w-full xl:w-3/5 p-12 overflow-hidden -mb-7">
 
             <p class="leading-normal text-base md:text-2xl mb-8 text-center md:text-left">
-            Subscribed:
+            Following:
           </p>
             <div class="xl:w-4/5 p-12 overflow-hidden bg-gray-900 opacity-75 w-full shadow-lg rounded-lg px-8 pt-6 pb-8 mb-0">
                 <div class="mb-4">
                     <label class="block text-blue-300 py-2 font-bold mb-2" for="emailaddress">
-                        Users
+                        Followed users:
                     </label>
                     <div class="rounded-lg border-2 p-2 border-gray text-white">
                         <table class="table-fixed">
                             <tbody>
-                              {% for trade in mytrades %}
-                                <tr>
-                                    <td class="font-extrabold p-4 w-1/2"><span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">
-                                        {{ trade[0] }} 
-                                    </span></td>
-                                    <td class="p-4 w-2/3">{{ trade[1] }}</td>
-                                    <td class="p-4 w-2/3">{{ trade[2] }}</td>
-                                    <td class="p-4 w-2/3"><div class="flex items-center justify-between pt-4">
-                                    <button
-                                        class="bg-gradient-to-r from-red-700 to-red-500 hover:from-yellow-500 hover:to-yellow-500 text-white font-bold py-2 px-4 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
-                                        type="button"
-                                    >
-                                        unsubscrizzle
-                                    </button>
-                                    </div>
-                                </td>
+                              {% for user in myfollowed %}
+                              <tr>
+                                <td class="font-extrabold p-4 w-1/2"><span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">
+                                    {{ user[1] }} 
+                                  </span></td>
+                                <td class="p-4 w-2/3">{{ user[4] }}</td>
+                                <td class="p-4 w-2/3">{{ user[5] }}</td>
+                                <td class="p-4 w-2/3"><div class="flex items-center justify-between pt-4">
+              
+           <form action="/TBD" method="get">
+                    <!--NEEDS WORK, where to route, how to pass data?-->
+                    <input class="bg-gradient-to-r from-red-800 to-red-500 hover:from-yellow-500 hover:to-yellow-500 text-white font-bold py-2 px-4 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
+                     type="submit" value="Unfollow">
+                  </form>
+            </div>
+</td>
                               </tr>
                               {% endfor %}        
                             </tbody>
@@ -123,6 +120,12 @@
                         </div>
                 </div>
             </div>
+
+
+
+
+
+
         </div>
        <!--Main-->
 
@@ -145,12 +148,12 @@
             <div class="xl:w-4/5 p-12 overflow-hidden bg-gray-900 opacity-75 w-full shadow-lg rounded-lg px-8 pt-6 pb-8 mb-0">
                 <div class="mb-4">
                     <label class="block text-blue-300 py-2 font-bold mb-2" for="emailaddress">
-                        Sorted by Most Recent
+                        Sorted by Most Recent (followed users):
                     </label>
                     <div class="rounded-lg border-2 p-2 border-gray text-white">
                         <table class="table-fixed">
                             <tbody>
-                              {% for trade in mytrades %}
+                              {% for trade in myfollowed %}
                               <tr>
                                 <td class="font-extrabold p-4 w-1/2"><span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">
                                     {{ trade[0] }}
@@ -158,6 +161,22 @@
 
                                 <td class="p-4 w-2/3">{{ trade[1] }}</td>
                                 <td class="p-4 w-2/3">{{ trade[2] }}</td>
+                                <td class="p-4 w-2/3">
+                               <form action="/TBD" method="get">
+                                    <!--NEEDS WORK, where to route, how to pass data?-->
+                                    <input class="bg-gradient-to-r from-green-600 to-green-500 hover:from-yellow-500 hover:to-yellow-500 text-white font-bold py-2 px-4 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
+                                      type="submit" value="Like">
+                               </form>
+                                 
+                                  </td>
+                                   
+                                   <td class="p-4 w-2/3">
+                                      <form action="/TBD" method="get">
+                                    <!--NEEDS WORK, where to route, how to pass data?-->
+                                    <input class="bg-gradient-to-r from-red-600 to-red-500 hover:from-yellow-500 hover:to-yellow-500 text-white font-bold py-2 px-4 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
+                                      type="submit" value="Dislike">
+                                    </form>
+                                   </td>
                               </tr>
                               {% endfor %}        
                             </tbody>
@@ -165,7 +184,15 @@
                         </div>
                 </div>
             </div>
+
+
+
+
+
+
         </div>
+
+
 
         <!--Footer-->
         <div class="w-full pt-16 pb-6 text-sm text-center md:text-left fade-in">

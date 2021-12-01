@@ -33,12 +33,12 @@ def chart():
 @app.route('/social')
 def social():
   username = request.cookies.get("userID")
-  cursor.execute("SELECT * FROM trade NATURAL JOIN user WHERE %s ORDER BY datetime", (username,)) # get my trades.
-  my_trades = []
+  cursor.execute("SELECT * FROM follows LEFT JOIN user on username2 = username WHERE username1 = %s ", (username,)) # get my trades.
+  myfollowed = []
   for x in cursor:
-    my_trades.append(x)
-  print (my_trades)
-  return render_template("social.html", usernamelogin=username, mytrades=my_trades)
+    myfollowed.append(x)
+  print (myfollowed)
+  return render_template("social.html", usernamelogin=username, myfollowed=myfollowed)
 
 
 @app.route('/data')
