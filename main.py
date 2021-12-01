@@ -96,4 +96,12 @@ def setcookie():
 @app.route('/newuserpage')
 def newuserpage():
   cursor.execute("INSERT INTO user (username, password, first_name, last_name, likes_count) VALUES (%s, %s, %s, %s, 0);", (request.args['usernamesignup'], request.args['passwordsignup'], request.args['fnamesignup'], request.args['lnamesignup']))
+  mydb.commit()
   return render_template('newuserpage.html')
+
+@app.route('/userdeleted', methods = ['POST', 'GET'])
+def userdeleted():
+  username = request.cookies.get('userID')
+  cursor.execute("DELETE FROM user WHERE username = %s;", (username,))
+  mydb.commit()
+  return render_template('userdeleted.html')

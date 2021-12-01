@@ -93,11 +93,13 @@
               </button>
             </div>
           </form>
-          <button
+          <form action="/userdeleted" method="post">
+            <button
             class="bg-red-400 hover:from-pink-500 hover:to-green-500 text-white font-bold py-2 px-4 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out self-center"
-            type="button" onclick="deleteAccount()">
+            type="submit">
             Delete Account
           </button>
+          </form>
         </div>
         
 
@@ -112,19 +114,3 @@
     </div>
   </body>
 </html>
-
-
-<!--All of my JavaScript functions-->
-<script>
-  function deleteAccount() {
-    var answer = window.confirm("Are you sure you want to delete your account?");
-    if (answer) {
-      //query("DELETE FROM user WHERE username = (user to be dropped);")
-      alert("We're sad to see you go :(")
-    }
-    else {
-      
-    }
-    
-  }
-</script>
