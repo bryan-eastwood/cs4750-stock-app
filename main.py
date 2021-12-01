@@ -133,7 +133,12 @@ def dashboard():
 
 @app.route('/allstocks', methods = ['POST', 'GET'])
 def allstocks():
-  return render_template('allstocks.html')
+  username = request.cookies.get("userID")
+  cursor.execute("SELECT max(ticker) AS ticker, ROUND(min(price), 2), ROUND(max(price), 2), max(datetime) FROM price_data GROUP BY ticker;")
+  allstocks = []
+  for x in cursor:
+      allstocks.append(x)
+  return render_template('allstocks.html', allstocks=allstocks, usernamelogin=username)
 
 @app.route('/getcookie', methods = ['POST', 'GET'])
 def getcookie():
@@ -159,3 +164,8 @@ def userdeleted():
   cursor.execute("DELETE FROM user WHERE username = %s;", (username,))
   mydb.commit()
   return render_template('userdeleted.html')
+
+@app.route('/stocks')
+def list_stocks():
+  cursor.execute("SELECT ticker FROM is_on WHERE ticker LIKE CONCAT(%s, '%')", (request.args.get('query'),))
+  return jsonify([x for x in cursor])

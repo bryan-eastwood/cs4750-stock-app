@@ -1,4 +1,8 @@
 <!DOCTYPE html>
+<script
+  src="https://code.jquery.com/jquery-3.6.0.min.js"
+  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+  crossorigin="anonymous"></script>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -29,6 +33,9 @@
           <a class="flex items-center text-indigo-400 no-underline hover:no-underline font-bold text-2xl lg:text-4xl" href="#">
             UVA<span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">Trade</span>
           </a>
+          <a class="flex items-end text-white no-underline hover:no-underline font-bold text-2xl lg:text-4xl" href="#">
+            Hi, {{ usernamelogin }}
+          </a>
           <div>
             <form action="/dashboard" method="get">
               <input class="bg-gradient-to-r from-purple-800 to-green-500 hover:from-pink-500 hover:to-green-500 text-white font-bold py-2 px-4 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
@@ -38,9 +45,56 @@
           
       </div>
       <br></br>
+      <div>
       <h1 class="my-4 text-3xl md:text-5xl text-white opacity-75 font-bold leading-tight text-center md:text-left">
         All Stocks:
       </h1>
+      <input
+      class="shadow appearance-none border rounded w-1/2 p-3 text-gray-700 leading-tight focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
+      id="ticker"
+      oninput="search(this.value)"
+      name="ticker"
+      type="text"
+      placeholder="Search Stocks:"
+      />
+      </div>
+      <br>
+      </br>
+
+      <div class="rounded-lg border-2 p-2 border-gray text-white">
+        <table class="table-fixed">
+            <tbody id="list">
+              {% for stock in allstocks %}
+              <tr>
+                <td class="font-extrabold p-4 w-1/5"><span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">
+                    {{ stock[0] }}
+                  </span>
+                </td>
+                <td class="font-extrabold p-4 w-1/5"><span class="bg-clip-text text-white">
+                    Minimum Price: {{ stock[1] }}
+                  </span>
+                </td>
+                <td class="font-extrabold p-4 w-1/5"><span class="bg-clip-text text-white">
+                    Maximum Price: {{ stock[2] }}
+                  </span>
+                </td>
+                <td class="p-4 w-1/5">
+                    <form action="/chart" method="get">
+                        <input class="bg-gradient-to-r from-purple-800 to-green-500 hover:from-pink-500 hover:to-green-500 text-white font-bold py-2 px-4 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
+                         type="submit" value= {{stock[0]}} id="ticker" name="ticker">
+                      </form> 
+                </td>
+                <td class="p-4 w-1/5">
+                    <form action="/allstocks" method="get">
+                        <input class="bg-gradient-to-r from-purple-800 to-green-500 hover:from-pink-500 hover:to-green-500 text-white font-bold py-2 px-4 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
+                         type="submit" value= Subscribe id="subscribe" name="subscribe" onclick="alert('Subscribed.')">
+                      </form>
+                </td>          
+              </tr>
+              {% endfor %}        
+            </tbody>
+          </table>
+        </div>
 
       <!--Footer-->
       <div class="w-full pt-16 pb-6 text-sm text-center md:text-left fade-in">
@@ -50,4 +104,51 @@
       </div>
     </div>
   </body>
+<script>
+function generate(ticker) {
+  return `
+  <tr>
+                <td class="font-extrabold p-4 w-1/2"><span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">
+                    ${ticker}
+                  </span></td>
+                
+                <td class="p-4 w-2/3">
+                    <form action="/chart" method="get">
+                        <input class="bg-gradient-to-r from-purple-800 to-green-500 hover:from-pink-500 hover:to-green-500 text-white font-bold py-2 px-4 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
+                         type="submit" value= ${ticker} id="ticker" name="ticker">
+                      </form> 
+                </td>
+                <td class="p-4 w-2/3">
+                    <form method="get">
+                        <input class="bg-gradient-to-r from-purple-800 to-green-500 hover:from-pink-500 hover:to-green-500 text-white font-bold py-2 px-4 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
+                         type="submit" value= Subscribe id="subscribe" name="subscribe">
+                      </form>
+                </td>          
+              </tr>
+
+  `;
+}
+
+  function search(str) {
+    $.ajax({
+
+      url: '/stocks',
+      type: 'GET',
+      data: {
+        'query': str
+      },
+      dataType: 'json',
+      success: function (data) {
+        $('#list')[0].innerHTML = '';
+        data.forEach(t => {
+          $('#list').append(generate(t));
+        });
+      },
+      error: function (request, error) {
+        alert("Request: " + JSON.stringify(error));
+      }
+    });
+  }
+
+</script>
 </html>
