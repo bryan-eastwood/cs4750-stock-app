@@ -166,6 +166,12 @@ def userdeleted():
   mydb.commit()
   return render_template('userdeleted.html')
 
+@app.route('/signout', methods = ['POST', 'GET'])
+def signout():
+  resp = make_response(redirect('/'))
+  resp.set_cookie('userID', '', expires=0)
+  return resp
+
 @app.route('/stocks')
 def list_stocks():
   cursor.execute("SELECT ticker FROM is_on WHERE ticker LIKE CONCAT(%s, '%')", (request.args.get('query'),))
