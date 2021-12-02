@@ -163,6 +163,11 @@ def trade():
     pass
   return redirect('/dashboard')
 
+@app.route('/signout', methods = ['POST', 'GET'])
+def signout():
+  resp = make_response(redirect('/'))
+  resp.set_cookie('userID', '', expires=0)
+  return resp
 
 @app.route('/allstocks', methods = ['POST', 'GET'])
 def allstocks():
