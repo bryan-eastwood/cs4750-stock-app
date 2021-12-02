@@ -58,13 +58,13 @@ def follow():
     print (e)
     print (cursor.statement)
   return redirect("/social")
+
 @app.route('/like', methods = ['GET','POST'])
 def like():
   username = request.cookies.get("userID")
   print(request.args.get('liked'))
   try:
     liked = request.args['liked']
-
     cursor.execute('INSERT INTO likes VALUES(%s,%s)',(liked,username))
     mydb.commit()
   except BaseException as e:
@@ -106,14 +106,18 @@ def data():
  
 @app.route('/dashboard', methods =  ['GET', 'POST'])
 def dashboard():
-
-
   if request.method == 'POST':
     username = request.form['usernamelogin']
     password =  request.form['passwordlogin']
+  else:
+    username = request.cookies.get("userID")
+  cursor.execute("SELECT ticker FROM subscribes_to WHERE username = %s ", (username,)) # get my trades.
+  my_stocks = []
+  for x in cursor:
+    my_stocks.append(x)
   try:
     username = request.cookies["userID"]
-    return render_template('dashboard.html', usernamelogin = username) 
+    return render_template('dashboard.html', usernamelogin = username, my_stocks=my_stocks) 
   except BaseException as e:
     try:
       cursor.execute("SELECT * FROM user WHERE username = %s AND password = %s;", (username, password))
@@ -126,7 +130,7 @@ def dashboard():
       'username': row[0]
     })
     if len(data) > 0:
-      resp = make_response(render_template('dashboard.html', usernamelogin = request.form['usernamelogin']))
+      resp = make_response(render_template('dashboard.html', usernamelogin = request.form['usernamelogin'], my_stocks=my_stocks))
       resp.set_cookie('userID', request.form['usernamelogin'])
       return resp
     else:
@@ -149,6 +153,7 @@ def subscribed():
     subscribe = request.args['subscribes']
     cursor.execute('INSERT INTO subscribes_to VALUES(%s,%s)',(username, subscribe))
     mydb.commit()
+    
   except BaseException as e:
     print (e)
     print (cursor.statement)
