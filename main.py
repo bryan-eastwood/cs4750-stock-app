@@ -38,7 +38,7 @@ def social():
   myfollowed = []
   for x in cursor:
     myfollowed.append(x)
-  myfollowedtrade = []
+  
 
   cursor.execute("SELECT * FROM likes LEFT JOIN trade on likes.tid = trade.tid WHERE likes.username = %s ", (username,)) # get my likes.
 
@@ -51,9 +51,35 @@ def social():
   mydislikes= []
   for x in cursor:
     mydislikes.append(( x[6],x[7],x[5], "BUY" if x[3] == 0 else "SELL", x[4]))
-  cursor.execute('SELECT * FROM (SELECT DISTINCT trade.username, ticker, amount, trade.tid, COUNT(likes.username) FROM (follows, participates_in, trade ) ,likes  WHERE follows.username1=%s AND trade.username = follows.username2 GROUP BY trade.tid) AS t1 NATURAL JOIN (SELECT DISTINCT trade.username, ticker, amount, trade.tid, COUNT(dislikes.username) FROM (follows, participates_in, trade ) ,dislikes  WHERE follows.username1=%s AND trade.username = follows.username2 GROUP BY trade.tid) AS t2',(username, username))
+
+  myfollowedtrade = []
+  temp2 = []
+  temp = []
+  cursor.reset()
+  cursor.execute('SELECT DISTINCT * FROM follows JOIN trade ON follows.username2 = trade.username WHERE follows.username1 = %s',(username, ))
   for x in cursor:
-    myfollowedtrade.append(x)
+    temp.append(x[2]) # gets tid
+    temp2.append((x[1],x[4],x[3],x[5]))
+  print(temp2)
+  thing = []
+  thing2 = []
+  for t in temp:
+    cursor.reset()
+    cursor.execute('SELECT COUNT(likes.tid) FROM trade LEFT JOIN likes ON trade.tid = likes.tid WHERE trade.tid = %s GROUP BY likes.tid',(t, ))
+    
+    for t in cursor:
+      thing.append(t[0])
+      print(t[0])
+    
+    
+  count = 0
+  for x in temp2:
+    
+    print(x)
+    myfollowedtrade.append((x[0],x[1],x[2],x[3], thing[count]))
+    count+= 1
+    #print(thing[0])
+
   print(myfollowedtrade)
   return render_template("social.html", usernamelogin=username, myfollowed=myfollowed, myfollowedtrade=myfollowedtrade, mylikes=mylikes, mydislikes=mydislikes)
 
