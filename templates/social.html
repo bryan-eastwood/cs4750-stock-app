@@ -50,7 +50,7 @@
 
         <!--Left Col-->
 
-        <div class="flex flex-col w-full xl:w-2/5 justify-center lg:items-start overflow-y-hidden">
+        <div class="flex flex-col w-full xl:w-full justify-center lg:items-start overflow-y-hidden">
          <p>&nbsp;&nbsp;&nbsp;&nbsp;</p>
          &nbsp;&nbsp;
 
@@ -59,8 +59,6 @@
 
             Likes:
           </p>
-
-
           <form action = "/follow" method = "get" class="bg-gray-900 opacity-75 w-full shadow-lg rounded-lg px-8 pt-6 pb-8 mb-4">
 
             
@@ -78,13 +76,11 @@
                                 <td class="p-4 w-2/3">amount</td>
                                 <td class="p-4 w-2/3">BUY/SELL</td>
                                 <td class="p-4 w-2/3">ticker</td>
+                                <td class="p-4 w-2/3"></td>
                                 </tr>
                             {% for user in mylikes %}
                               <tr>
                                 
-                                <td class="font-extrabold p-4 w-1/2"><span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">
-                                    <time datetime={{user[0]}}>
-                                  </span></td>
                                 <td class="p-4 w-2/3">{{ user[0] }}</td>
                                 <td class="p-4 w-2/3">{{ user[1] }}</td>
                                 <td class="p-4 w-2/3">{{ user[2]}}</td>
@@ -110,7 +106,7 @@
           </form>
         </div>
 
-        <div class="flex flex-col w-full xl:w-2/5 justify-center lg:items-start overflow-y-hidden">
+        <div class="flex flex-col w-full xl:w-full justify-center lg:items-start overflow-y-hidden">
             <p>&nbsp;&nbsp;&nbsp;&nbsp;</p>
             &nbsp;&nbsp;
    
@@ -138,13 +134,11 @@
                                 <td class="p-4 w-2/3">amount</td>
                                 <td class="p-4 w-2/3">BUY/SELL</td>
                                 <td class="p-4 w-2/3">ticker</td>
+                                <td class="p-4 w-2/3"></td>
                                 </tr>
                             {% for user in mydislikes %}
                               <tr>
                                 
-                                <td class="font-extrabold p-4 w-1/2"><span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">
-                                    <time datetime={{user[0]}}>
-                                  </span></td>
                                 <td class="p-4 w-2/3">{{ user[0] }}</td>
                                 <td class="p-4 w-2/3">{{ user[1] }}</td>
                                 <td class="p-4 w-2/3">{{ user[2]}}</td>
