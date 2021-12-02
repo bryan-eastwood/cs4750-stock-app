@@ -43,19 +43,60 @@
           </h1>
           <br></br>
 
+          <form action="/favorite" method="get" class="bg-gray-900 opacity-75 w-full shadow-lg rounded-lg px-8 pt-6 pb-8 mb-4">
+            <div class="mb-4">
+              <label class="block text-blue-300 py-2 font-bold mb-2" for="emailaddress">
+                My Exchanges
+              </label>
+
+              <div class="rounded-lg border-2 p-2 border-gray text-white">
+                <table class="table-fixed">
+                    <tbody>
+                        {% for e in exchanges %}
+                              <tr>
+                                <td class="font-extrabold p-4 w-1/2"><span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">
+                                    {{ e[0] }}
+                                  </span></td>
+                                <td class="p-4 w-2/3">{{ e[1] }}</td>
+                                <td class="p-4 w-2/3">
+                                  {% if e[2] %}
+                                  <button
+                                  class="bg-gradient-to-r from-purple-800 to-green-500 hover:from-pink-500 hover:to-green-500 text-white font-bold py-2 px-4 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
+                                    type="submit"
+                                    name="unfavorite"
+                                    value="{{ e[0] }}">
+                                    Unfavorite
+                                  </button>
+                                  {% else %}  
+                                  <button
+                                  class="bg-gradient-to-r from-purple-800 to-green-500 hover:from-pink-500 hover:to-green-500 text-white font-bold py-2 px-4 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
+                                    type="submit"
+                                    name="favorite"
+                                    value="{{ e[0] }}">
+                                    Favorite
+                                  </button>
+                                  {% endif %}
+                                </td>
+                              </tr>
+                              {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+            </div>
+          </form>
+
+          <br></br>
           <form action="/chart" method="get">
             <input
             class="shadow appearance-none border rounded w-full p-3 text-gray-700 leading-tight focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
             id="ticker"
             name="ticker"
             type="text"
-            placeholder="Search Stocks:"
+            placeholder="Go to stock"
             />
           </form>
-          
+
           <br></br>
-
-
           <form action="/allstocks" method="get" class="bg-gray-900 opacity-75 w-full shadow-lg rounded-lg px-8 pt-6 pb-8 mb-4">
             <div class="mb-4">
               <label class="block text-blue-300 py-2 font-bold mb-2" for="emailaddress">
@@ -69,10 +110,9 @@
                         {% for trade in my_stocks %}
                               <tr>
                                 <td class="font-extrabold p-4 w-1/2"><span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">
-                                    {{ trade[0] }}
+                                  <a href="/chart?ticker={{trade[0]}}">{{ trade[0] }}</a>  
+                                  
                                   </span></td>
-                                <td class="p-4 w-2/3">{{ trade[1] }}</td>
-                                <td class="p-4 w-2/3">{{ trade[2] }}</td>
                               </tr>
                               {% endfor %}   
                       </tr>
@@ -118,6 +158,12 @@
               </button>
             </div>
           </form>
+          <form action="/signout" method="post">
+            <button
+            class="bg-red-400 hover:from-pink-500 hover:to-green-500 text-white font-bold py-2 px-4 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out self-center"
+            type="submit">
+            Sign out
+          </button>
           <form action="/userdeleted" method="post">
             <button
             class="bg-red-400 hover:from-pink-500 hover:to-green-500 text-white font-bold py-2 px-4 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out self-center"
