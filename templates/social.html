@@ -57,7 +57,7 @@
          
           <p class="leading-normal text-base md:text-2xl mb-8 text-center md:text-left">
 
-            User Search:
+            Likes:
           </p>
 
 
@@ -67,31 +67,131 @@
 
                 <div class="mb-4">
                     <label class="block text-blue-300 py-2 font-bold mb-2" for="emailaddress">
-                        Follow a user:
+                        Your Likes:
                     </label>
                     <div class="rounded-lg border-2 p-2 border-gray text-white">
-       
-                                <input
-                                      class="shadow appearance-none border rounded w-full p-3 text-gray-700 leading-tight focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
-                                      id="usertofollow"
-                                      name="usertofollow"
-                                      type="text"
-                                      placeholder="First name:"
-                                 /> 
-                           
-                        </div>
-                        <div class="flex items-center justify-between pt-4">
-                            <button
-                            class="bg-gradient-to-r from-purple-800 to-green-500 hover:from-pink-500 hover:to-green-500 text-white font-bold py-2 px-4 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
-                              type="submit">
-                              Follow
-                            </button>
-                          </div>
+                        <table class="table-fixed">
+                            <tbody>
+                              {% for user in mylikes %}
+                              <tr>
+                                <td class="font-extrabold p-4 w-1/2"><span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">
+                                    <time datetime={{user[0]}}>
+                                  </span></td>
+                                <td class="p-4 w-2/3">{{ user[0] }}</td>
+                                <td class="p-4 w-2/3">{{ user[1] }}</td>
+                                <td class="p-4 w-2/3">{{ user[2]}}</td>
+                                <td class="p-4 w-2/3">{{ user[3]}}</td>
+                                <td class="p-4 w-2/3">{{ user[4] }}</td>
 
+                                <td class="p-4 w-2/3"><div class="flex items-center justify-between pt-4">
+              
+                                    <form action="/unfollow" method="get">
+                                                <!--NEEDS WORK, where to route, how to pass data?-->
+                                                <input class="bg-gradient-to-r from-red-800 to-red-500 hover:from-yellow-500 hover:to-yellow-500 text-white font-bold py-2 px-4 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
+                                                type="submit" value="Unfollow">
+                                                <input type="hidden" id="unfollowed" name="unfollowed" value={{user[1]}}>
+                                            </form>
+                                        </div>
+                                 </td>
+                              </tr>
+                              {% endfor %}        
+                            </tbody>
+                          </table>
+                        </div>
                 </div>
           </form>
         </div>
 
+        <div class="flex flex-col w-full xl:w-2/5 justify-center lg:items-start overflow-y-hidden">
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;</p>
+            &nbsp;&nbsp;
+   
+            
+             <p class="leading-normal text-base md:text-2xl mb-8 text-center md:text-left">
+   
+               Dislikes:
+             </p>
+   
+   
+             <form action = "/follow" method = "get" class="bg-gray-900 opacity-75 w-full shadow-lg rounded-lg px-8 pt-6 pb-8 mb-4">
+   
+               
+   
+                   <div class="mb-4">
+                       <label class="block text-blue-300 py-2 font-bold mb-2" for="emailaddress">
+                           Your Dislikes:
+                       </label>
+                       <div class="rounded-lg border-2 p-2 border-gray text-white">
+                        <table class="table-fixed">
+                            <tbody>
+                              {% for user in myfollowed %}
+                              <tr>
+                                <td class="font-extrabold p-4 w-1/2"><span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">
+                                    {{ user[1] }} 
+                                  </span></td>
+                                <td class="p-4 w-2/3">{{ user[4] }}</td>
+                                <td class="p-4 w-2/3">{{ user[5] }}</td>
+
+                                <td class="p-4 w-2/3"><div class="flex items-center justify-between pt-4">
+              
+                                    <form action="/unfollow" method="get">
+                                                <!--NEEDS WORK, where to route, how to pass data?-->
+                                                <input class="bg-gradient-to-r from-red-800 to-red-500 hover:from-yellow-500 hover:to-yellow-500 text-white font-bold py-2 px-4 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
+                                                type="submit" value="Unfollow">
+                                                <input type="hidden" id="unfollowed" name="unfollowed" value={{user[1]}}>
+                                            </form>
+                                        </div>
+                                 </td>
+                              </tr>
+                              {% endfor %}        
+                            </tbody>
+                          </table>
+                        </div>
+                   </div>
+             </form>
+           </div>
+
+           <div class="flex flex-col w-full xl:w-2/5 justify-center lg:items-start overflow-y-hidden">
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;</p>
+            &nbsp;&nbsp;
+   
+            
+             <p class="leading-normal text-base md:text-2xl mb-8 text-center md:text-left">
+   
+               User Search:
+             </p>
+   
+   
+             <form action = "/follow" method = "get" class="bg-gray-900 opacity-75 w-full shadow-lg rounded-lg px-8 pt-6 pb-8 mb-4">
+   
+               
+   
+                   <div class="mb-4">
+                       <label class="block text-blue-300 py-2 font-bold mb-2" for="emailaddress">
+                           Follow a user:
+                       </label>
+                       <div class="rounded-lg border-2 p-2 border-gray text-white">
+          
+                                   <input
+                                         class="shadow appearance-none border rounded w-full p-3 text-gray-700 leading-tight focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
+                                         id="usertofollow"
+                                         name="usertofollow"
+                                         type="text"
+                                         placeholder="First name:"
+                                    /> 
+                              
+                           </div>
+                           <div class="flex items-center justify-between pt-4">
+                               <button
+                               class="bg-gradient-to-r from-purple-800 to-green-500 hover:from-pink-500 hover:to-green-500 text-white font-bold py-2 px-4 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
+                                 type="submit">
+                                 Follow
+                               </button>
+                             </div>
+   
+                   </div>
+             </form>
+           </div>
 
 
         <!--Right Col-->
@@ -167,11 +267,14 @@
                     <div class="rounded-lg border-2 p-2 border-gray text-white">
                         <table class="table-fixed">
                             <tbody>
+
+                                <td class="p-4 w-2/3">username </td>
+                                <td class="p-4 w-2/3">ticker </td>
+                                <td class="p-4 w-2/3">amount</td>
+                                <td class="p-4 w-2/3">likes </td>
+                                <td class="p-4 w-2/3">dislikes </td>
                               {% for trade in myfollowedtrade %}
-                              <tr>
-                                <td class="font-extrabold p-4 w-1/2"><span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">
-                                    {{ trade[0] }}
-                                  </span></td>
+                              <tr></tr>
 
                                 <td class="p-4 w-2/3">{{ trade[0] }}</td>
                                 <td class="p-4 w-2/3">{{ trade[1] }}</td>
@@ -183,17 +286,19 @@
                                     <!--NEEDS WORK, where to route, how to pass data?-->
                                     <input class="bg-gradient-to-r from-green-600 to-green-500 hover:from-yellow-500 hover:to-yellow-500 text-white font-bold py-2 px-4 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
                                       type="submit"  value="Like" >
-                                    <input type="hidden"name="liked" id="liked" value={{trade[3]}}>
+                                    <input type="hidden" name="liked" id="liked" value={{trade[3]}}>
 
                                </form>
                                  
                                   </td>
                                    
                                    <td class="p-4 w-2/3">
-                                      <form action="/TBD" method="get">
-                                    <!--NEEDS WORK, where to route, how to pass data?-->
-                                    <input class="bg-gradient-to-r from-red-600 to-red-500 hover:from-yellow-500 hover:to-yellow-500 text-white font-bold py-2 px-4 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
-                                      type="submit" name="dislikes" value="Dislike">
+                                        <form action="/dislike" method="get">
+                                            <!--NEEDS WORK, where to route, how to pass data?-->
+                                            <input class="bg-gradient-to-r from-red-600 to-red-500 hover:from-yellow-500 hover:to-yellow-500 text-white font-bold py-2 px-4 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
+                                            type="submit" value="Dislike">
+                                            <input type="hidden"name="disliked" id="disliked" value={{trade[3]}}>
+
                                     </form>
                                    </td>
                               </tr>
