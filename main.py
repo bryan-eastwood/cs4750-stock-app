@@ -39,13 +39,19 @@ def social():
   for x in cursor:
     myfollowed.append(x)
   myfollowedtrade = []
-  
-  
-  # cursor.execute('SELECT follows.username2, ticker, amount, trade.tid, COUNT(likes.username), COUNT(dislikes.username) FROM participates_in, trade, follows, likes, dislikes WHERE follows.username1=%s AND participates_in.tid = trade.tid AND trade.username = follows.username2 GROUP BY trade.tid;',(username,))
+
+  cursor.execute("SELECT * FROM likes LEFT JOIN trade on likes.tid = trade.tid WHERE likes.username = %s ", (username,)) # get my likes.
+
+  mylikes = []
+  for x in cursor:
+    mylikes.append(( x[6],x[7],x[5], "BUY" if x[3] == 0 else "SELL", x[4]))
+    
+  print(mylikes)
+  cursor.execute('SELECT * FROM (SELECT follows.username2, ticker, amount, trade.tid, COUNT(likes.username) FROM (participates_in, trade ,follows) LEFT JOIN likes ON trade.tid=likes.tid WHERE follows.username1=%s AND participates_in.tid = trade.tid AND trade.username = follows.username2 GROUP BY trade.tid) AS t1 NATURAL JOIN (SELECT follows.username2, ticker, amount, trade.tid, COUNT(dislikes.username) FROM (participates_in, trade ,follows) LEFT JOIN dislikes ON trade.tid=dislikes.tid WHERE follows.username1=%s AND participates_in.tid = trade.tid AND trade.username = follows.username2 GROUP BY trade.tid) AS t2;',(username, username))
   for x in cursor:
     myfollowedtrade.append(x)
-  # print(myfollowedtrade)
-  return render_template("social.html", usernamelogin=username, myfollowed=myfollowed, myfollowedtrade=myfollowedtrade)
+  print(myfollowedtrade)
+  return render_template("social.html", usernamelogin=username, myfollowed=myfollowed, myfollowedtrade=myfollowedtrade, mylikes=mylikes)
 
 @app.route('/follow', methods = ['GET','POST'])
 def follow():
@@ -62,10 +68,22 @@ def follow():
 @app.route('/like', methods = ['GET','POST'])
 def like():
   username = request.cookies.get("userID")
-  print(request.args.get('liked'))
   try:
     liked = request.args['liked']
     cursor.execute('INSERT INTO likes VALUES(%s,%s)',(liked,username))
+    mydb.commit()
+  except BaseException as e:
+    print (e)
+    print (cursor.statement)
+  return redirect("/social")
+
+@app.route('/dislike', methods = ['GET','POST'])
+def dislike():
+  username = request.cookies.get("userID")
+  try:
+    disliked = request.args['disliked']
+
+    cursor.execute('INSERT INTO dislikes VALUES(%s,%s)',(disliked,username))
     mydb.commit()
   except BaseException as e:
     print (e)
