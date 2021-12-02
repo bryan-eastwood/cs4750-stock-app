@@ -103,37 +103,38 @@ def data():
     })
   return jsonify(data)
 
- 
-@app.route('/dashboard', methods =  ['GET', 'POST'])
+@app.route('/dashboard', methods = ['POST', 'GET'])
 def dashboard():
-
+  if not request.cookies.get("userID"):
+    username = request.form['usernamelogin']
+    password =  request.form['passwordlogin']
+    cursor.execute("SELECT * FROM user WHERE username = %s AND password = %s;", (username, password))
+    if(len([x for x in cursor]) == 0):
+      return redirect('/')
+    resp = make_response(redirect("/dashboard"))
+    resp.set_cookie('userID', request.form['usernamelogin'])
+    return resp
+  username = request.cookies["userID"]
   cursor.execute("SELECT * FROM favorites WHERE username=%s", (request.cookies["userID"],))
   favorites = [x[1] for x in cursor]
   cursor.execute("SELECT * FROM exchange")
   exchanges = sorted([(x[0], x[1], x[0] in favorites) for x in cursor], key=lambda x: 0 if x[2] else 1)
-  if request.method == 'POST':
-    username = request.form['usernamelogin']
-    password =  request.form['passwordlogin']
-  try:
-    username = request.cookies["userID"]
-    return render_template('dashboard.html', usernamelogin = username, exchanges = exchanges) 
-  except BaseException as e:
-    try:
-      cursor.execute("SELECT * FROM user WHERE username = %s AND password = %s;", (username, password))
-    except BaseException as e:
-      print(e)
-      print(cursor.statement)
-    data = []
-    for row in cursor:
-      data.append({
-      'username': row[0]
-    })
-    if len(data) > 0:
-      resp = make_response(render_template('dashboard.html', usernamelogin = request.form['usernamelogin']))
-      resp.set_cookie('userID', request.form['usernamelogin'])
-      return resp
-    else:
-      return render_template('index.html')
+  return render_template('dashboard.html', usernamelogin = username, exchanges = exchanges) 
+  
+@app.route('/trade', methods = ['POST', 'GET'])
+def trade():
+  username = request.cookies["userID"]
+  buy = request.args.get('buy')
+  sell = request.args.get('sell')
+  amount = request.args.get('amount')
+  if(buy):
+    cursor.execute('INSERT INTO trade(type,ticker,amount,username) VALUES(%s,%s,%s,%s)',(0,buy,amount,username))
+  elif(sell):
+    cursor.execute('INSERT INTO trade(type,ticker,amount,username) VALUES(%s,%s,%s,%s)',(1,sell,amount,username))
+  else:
+    pass
+  return redirect('/dashboard')
+
 
 @app.route('/allstocks', methods = ['POST', 'GET'])
 def allstocks():
