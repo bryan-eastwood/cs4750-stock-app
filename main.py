@@ -106,6 +106,11 @@ def data():
  
 @app.route('/dashboard', methods =  ['GET', 'POST'])
 def dashboard():
+
+  cursor.execute("SELECT * FROM favorites WHERE username=%s", (request.cookies["userID"],))
+  favorites = [x[1] for x in cursor]
+  cursor.execute("SELECT * FROM exchange")
+  exchanges = sorted([(x[0], x[1], x[0] in favorites) for x in cursor], key=lambda x: 0 if x[2] else 1)
   if request.method == 'POST':
     username = request.form['usernamelogin']
     password =  request.form['passwordlogin']
@@ -117,7 +122,7 @@ def dashboard():
     my_stocks.append(x)
   try:
     username = request.cookies["userID"]
-    return render_template('dashboard.html', usernamelogin = username, my_stocks=my_stocks) 
+    return render_template('dashboard.html', usernamelogin = username, exchanges = exchanges, my_stocks=my_stocks) 
   except BaseException as e:
     try:
       cursor.execute("SELECT * FROM user WHERE username = %s AND password = %s;", (username, password))
@@ -157,6 +162,19 @@ def subscribed():
   except BaseException as e:
     print (e)
     print (cursor.statement)
+  return redirect('/dashboard')
+
+@app.route('/favorite', methods = ['POST', 'GET'])
+def favorite():
+  username = request.cookies["userID"]
+  favorite = request.args.get('favorite')
+  unfavorite = request.args.get('unfavorite')
+  if(favorite):
+    cursor.execute('INSERT INTO favorites VALUES(%s,%s)',(username, favorite))
+  elif(unfavorite):
+    cursor.execute('DELETE FROM favorites WHERE username = %s AND exchange_name = %s',(username, unfavorite))
+  else:
+    pass
   return redirect('/dashboard')
 
 @app.route('/getcookie', methods = ['POST', 'GET'])
