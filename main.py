@@ -47,11 +47,15 @@ def social():
     mylikes.append(( x[6],x[7],x[5], "BUY" if x[3] == 0 else "SELL", x[4]))
     
   print(mylikes)
+  cursor.execute("SELECT * FROM dislikes LEFT JOIN trade on dislikes.tid = trade.tid WHERE dislikes.username = %s ", (username,)) # get my dislikes.
+  mydislikes= []
+  for x in cursor:
+    mydislikes.append(( x[6],x[7],x[5], "BUY" if x[3] == 0 else "SELL", x[4]))
   cursor.execute('SELECT * FROM (SELECT follows.username2, ticker, amount, trade.tid, COUNT(likes.username) FROM (participates_in, trade ,follows) LEFT JOIN likes ON trade.tid=likes.tid WHERE follows.username1=%s AND participates_in.tid = trade.tid AND trade.username = follows.username2 GROUP BY trade.tid) AS t1 NATURAL JOIN (SELECT follows.username2, ticker, amount, trade.tid, COUNT(dislikes.username) FROM (participates_in, trade ,follows) LEFT JOIN dislikes ON trade.tid=dislikes.tid WHERE follows.username1=%s AND participates_in.tid = trade.tid AND trade.username = follows.username2 GROUP BY trade.tid) AS t2;',(username, username))
   for x in cursor:
     myfollowedtrade.append(x)
   print(myfollowedtrade)
-  return render_template("social.html", usernamelogin=username, myfollowed=myfollowed, myfollowedtrade=myfollowedtrade, mylikes=mylikes)
+  return render_template("social.html", usernamelogin=username, myfollowed=myfollowed, myfollowedtrade=myfollowedtrade, mylikes=mylikes, mydislikes=mydislikes)
 
 @app.route('/follow', methods = ['GET','POST'])
 def follow():
@@ -64,12 +68,12 @@ def follow():
     print (e)
     print (cursor.statement)
   return redirect("/social")
-
 @app.route('/like', methods = ['GET','POST'])
 def like():
   username = request.cookies.get("userID")
   try:
     liked = request.args['liked']
+
     cursor.execute('INSERT INTO likes VALUES(%s,%s)',(liked,username))
     mydb.commit()
   except BaseException as e:
@@ -121,78 +125,42 @@ def data():
     })
   return jsonify(data)
 
-@app.route('/dashboard', methods = ['POST', 'GET'])
+ 
+@app.route('/dashboard', methods =  ['GET', 'POST'])
 def dashboard():
-  if not request.cookies.get("userID"):
+
+  if request.method == 'POST':
     username = request.form['usernamelogin']
     password =  request.form['passwordlogin']
-    cursor.execute("SELECT * FROM user WHERE username = %s AND password = %s;", (username, password))
-    if(len([x for x in cursor]) == 0):
-      return redirect('/')
-    resp = make_response(redirect("/dashboard"))
-    resp.set_cookie('userID', request.form['usernamelogin'])
-    return resp
-  username = request.cookies["userID"]
-  cursor.execute("SELECT * FROM favorites WHERE username=%s", (request.cookies["userID"],))
-  favorites = [x[1] for x in cursor]
-  cursor.execute("SELECT * FROM exchange")
-  exchanges = sorted([(x[0], x[1], x[0] in favorites) for x in cursor], key=lambda x: 0 if x[2] else 1)
-  cursor.execute("SELECT ticker FROM subscribes_to WHERE username = %s ", (username,)) # get my trades.
-  my_stocks = []
-  for x in cursor:
-    my_stocks.append(x)
-  return render_template('dashboard.html', usernamelogin = username, exchanges = exchanges, my_stocks=my_stocks) 
-  
-@app.route('/trade', methods = ['POST', 'GET'])
-def trade():
-  username = request.cookies["userID"]
-  buy = request.args.get('buy')
-  sell = request.args.get('sell')
-  amount = request.args.get('amount')
-  if(buy):
-    cursor.execute('INSERT INTO trade(type,ticker,amount,username) VALUES(%s,%s,%s,%s)',(0,buy,amount,username))
-  elif(sell):
-    cursor.execute('INSERT INTO trade(type,ticker,amount,username) VALUES(%s,%s,%s,%s)',(1,sell,amount,username))
-  else:
-    pass
-  return redirect('/dashboard')
-
+  try:
+    username = request.cookies.get("userID")
+    return render_template('dashboard.html', usernamelogin = username) 
+  except BaseException as e:
+    try:
+      cursor.execute("SELECT * FROM user WHERE username = %s AND password = %s;", (username, password))
+    except BaseException as e:
+      print(e)
+      print(cursor.statement)
+    data = []
+    for row in cursor:
+      data.append({
+      'username': row[0]
+    })
+    if len(data) > 0:
+      resp = make_response(render_template('dashboard.html', usernamelogin = request.form['usernamelogin']))
+      resp.set_cookie('userID', request.form['usernamelogin'])
+      return resp
+    else:
+      return render_template('index.html')
 
 @app.route('/allstocks', methods = ['POST', 'GET'])
 def allstocks():
   username = request.cookies.get("userID")
-  cursor.execute("SELECT max(ticker) AS ticker, ROUND(min(price), 2), ROUND(max(price), 2), max(datetime) FROM price_data WHERE ticker LIKE CONCAT(%s, '%') GROUP BY ticker;", (request.args.get('query') or "",))
+  cursor.execute("SELECT max(ticker) AS ticker, ROUND(min(price), 2), ROUND(max(price), 2), max(datetime) FROM price_data GROUP BY ticker;")
   allstocks = []
   for x in cursor:
       allstocks.append(x)
   return render_template('allstocks.html', allstocks=allstocks, usernamelogin=username)
-
-@app.route('/subscribed', methods = ['GET', 'POST'])
-def subscribed():
-  username = request.cookies.get("userID")
-  print(request.args.get('subscribes'))
-  try:
-    subscribe = request.args['subscribes']
-    cursor.execute('INSERT INTO subscribes_to VALUES(%s,%s)',(username, subscribe))
-    mydb.commit()
-    
-  except BaseException as e:
-    print (e)
-    print (cursor.statement)
-  return redirect('/dashboard')
-
-@app.route('/favorite', methods = ['POST', 'GET'])
-def favorite():
-  username = request.cookies["userID"]
-  favorite = request.args.get('favorite')
-  unfavorite = request.args.get('unfavorite')
-  if(favorite):
-    cursor.execute('INSERT INTO favorites VALUES(%s,%s)',(username, favorite))
-  elif(unfavorite):
-    cursor.execute('DELETE FROM favorites WHERE username = %s AND exchange_name = %s',(username, unfavorite))
-  else:
-    pass
-  return redirect('/dashboard')
 
 @app.route('/getcookie', methods = ['POST', 'GET'])
 def getcookie():
@@ -218,12 +186,6 @@ def userdeleted():
   cursor.execute("DELETE FROM user WHERE username = %s;", (username,))
   mydb.commit()
   return render_template('userdeleted.html')
-
-@app.route('/signout', methods = ['POST', 'GET'])
-def signout():
-  resp = make_response(redirect('/'))
-  resp.set_cookie('userID', '', expires=0)
-  return resp
 
 @app.route('/stocks')
 def list_stocks():

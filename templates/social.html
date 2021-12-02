@@ -72,8 +72,16 @@
                     <div class="rounded-lg border-2 p-2 border-gray text-white">
                         <table class="table-fixed">
                             <tbody>
-                              {% for user in mylikes %}
+                                <tr>
+                                <td class="p-4 w-2/3">time/date </td>
+                                <td class="p-4 w-2/3">username</td>
+                                <td class="p-4 w-2/3">amount</td>
+                                <td class="p-4 w-2/3">BUY/SELL</td>
+                                <td class="p-4 w-2/3">ticker</td>
+                                </tr>
+                            {% for user in mylikes %}
                               <tr>
+                                
                                 <td class="font-extrabold p-4 w-1/2"><span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">
                                     <time datetime={{user[0]}}>
                                   </span></td>
@@ -97,7 +105,7 @@
                               {% endfor %}        
                             </tbody>
                           </table>
-                        </div>
+                    </div>
                 </div>
           </form>
         </div>
@@ -124,13 +132,24 @@
                        <div class="rounded-lg border-2 p-2 border-gray text-white">
                         <table class="table-fixed">
                             <tbody>
-                              {% for user in myfollowed %}
+                                <tr>
+                                <td class="p-4 w-2/3">time/date </td>
+                                <td class="p-4 w-2/3">username</td>
+                                <td class="p-4 w-2/3">amount</td>
+                                <td class="p-4 w-2/3">BUY/SELL</td>
+                                <td class="p-4 w-2/3">ticker</td>
+                                </tr>
+                            {% for user in mydislikes %}
                               <tr>
+                                
                                 <td class="font-extrabold p-4 w-1/2"><span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">
-                                    {{ user[1] }} 
+                                    <time datetime={{user[0]}}>
                                   </span></td>
+                                <td class="p-4 w-2/3">{{ user[0] }}</td>
+                                <td class="p-4 w-2/3">{{ user[1] }}</td>
+                                <td class="p-4 w-2/3">{{ user[2]}}</td>
+                                <td class="p-4 w-2/3">{{ user[3]}}</td>
                                 <td class="p-4 w-2/3">{{ user[4] }}</td>
-                                <td class="p-4 w-2/3">{{ user[5] }}</td>
 
                                 <td class="p-4 w-2/3"><div class="flex items-center justify-between pt-4">
               
