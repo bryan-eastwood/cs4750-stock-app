@@ -148,7 +148,7 @@ def trade():
   username = request.cookies["userID"]
   buy = request.args.get('buy')
   sell = request.args.get('sell')
-  amount = request.args.get('amount')
+  amount = 1
   if(buy):
     cursor.execute('INSERT INTO trade(type,ticker,amount,username) VALUES(%s,%s,%s,%s)',(0,buy,amount,username))
   elif(sell):
