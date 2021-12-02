@@ -58,13 +58,13 @@ def follow():
     print (e)
     print (cursor.statement)
   return redirect("/social")
+
 @app.route('/like', methods = ['GET','POST'])
 def like():
   username = request.cookies.get("userID")
   print(request.args.get('liked'))
   try:
     liked = request.args['liked']
-
     cursor.execute('INSERT INTO likes VALUES(%s,%s)',(liked,username))
     mydb.commit()
   except BaseException as e:
@@ -153,6 +153,7 @@ def subscribed():
     subscribe = request.args['subscribes']
     cursor.execute('INSERT INTO subscribes_to VALUES(%s,%s)',(username, subscribe))
     mydb.commit()
+    
   except BaseException as e:
     print (e)
     print (cursor.statement)
