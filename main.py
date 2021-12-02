@@ -67,16 +67,25 @@ def social():
     cursor.reset()
     cursor.execute('SELECT COUNT(likes.tid) FROM trade LEFT JOIN likes ON trade.tid = likes.tid WHERE trade.tid = %s GROUP BY likes.tid',(t, ))
     
-    for t in cursor:
-      thing.append(t[0])
-      print(t[0])
+    for s in cursor:
+      thing.append(s[0])
+      print(s[0])
     
+    cursor.reset()
+    cursor.execute('SELECT COUNT(dislikes.tid) FROM trade LEFT JOIN dislikes ON trade.tid = dislikes.tid WHERE trade.tid = %s GROUP BY dislikes.tid',(t, ))
     
+    for w in cursor:
+      thing2.append(w[0])
+      print(w[0])
+
+    
+
+   
   count = 0
   for x in temp2:
     
     print(x)
-    myfollowedtrade.append((x[0],x[1],x[2],x[3], thing[count]))
+    myfollowedtrade.append((x[0],x[1],x[2],x[3], thing[count], thing2[count]))
     count+= 1
     #print(thing[0])
 
