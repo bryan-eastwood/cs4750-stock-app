@@ -119,7 +119,11 @@ def dashboard():
   favorites = [x[1] for x in cursor]
   cursor.execute("SELECT * FROM exchange")
   exchanges = sorted([(x[0], x[1], x[0] in favorites) for x in cursor], key=lambda x: 0 if x[2] else 1)
-  return render_template('dashboard.html', usernamelogin = username, exchanges = exchanges) 
+  cursor.execute("SELECT ticker FROM subscribes_to WHERE username = %s ", (username,)) # get my trades.
+  my_stocks = []
+  for x in cursor:
+    my_stocks.append(x)
+  return render_template('dashboard.html', usernamelogin = username, exchanges = exchanges, my_stocks=my_stocks) 
   
 @app.route('/trade', methods = ['POST', 'GET'])
 def trade():
