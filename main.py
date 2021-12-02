@@ -51,7 +51,7 @@ def social():
   mydislikes= []
   for x in cursor:
     mydislikes.append(( x[6],x[7],x[5], "BUY" if x[3] == 0 else "SELL", x[4]))
-  cursor.execute('SELECT * FROM (SELECT follows.username2, ticker, amount, trade.tid, COUNT(likes.username) FROM (participates_in, trade ,follows) LEFT JOIN likes ON trade.tid=likes.tid WHERE follows.username1=%s AND participates_in.tid = trade.tid AND trade.username = follows.username2 GROUP BY trade.tid) AS t1 NATURAL JOIN (SELECT follows.username2, ticker, amount, trade.tid, COUNT(dislikes.username) FROM (participates_in, trade ,follows) LEFT JOIN dislikes ON trade.tid=dislikes.tid WHERE follows.username1=%s AND participates_in.tid = trade.tid AND trade.username = follows.username2 GROUP BY trade.tid) AS t2;',(username, username))
+  cursor.execute('SELECT * FROM (SELECT DISTINCT trade.username, ticker, amount, trade.tid, COUNT(likes.username) FROM (follows, participates_in, trade ) ,likes  WHERE follows.username1=%s AND trade.username = follows.username2 GROUP BY trade.tid) AS t1 NATURAL JOIN (SELECT DISTINCT trade.username, ticker, amount, trade.tid, COUNT(dislikes.username) FROM (follows, participates_in, trade ) ,dislikes  WHERE follows.username1=%s AND trade.username = follows.username2 GROUP BY trade.tid) AS t2',(username, username))
   for x in cursor:
     myfollowedtrade.append(x)
   print(myfollowedtrade)
